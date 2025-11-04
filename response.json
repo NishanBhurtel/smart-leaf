@@ -1,0 +1,22 @@
+{
+  "all_confidences": {
+    "Pepper_bell_Bacterial_spot": 4.064513370394707,
+    "Pepper_bell_healthy": 4.163222759962082,
+    "Potato_Early_blight": 1.8056556582450867,
+    "Potato_Late_blight": 9.368260949850082,
+    "Potato_healthy": 5.814835801720619,
+    "Tomato_Bacterial_spot": 10.677441954612732,
+    "Tomato_Early_blight": 5.927189439535141,
+    "Tomato_Late_blight": 5.210243538022041,
+    "Tomato_Leaf_Mold": 6.363158673048019,
+    "Tomato_Septoria_leaf_spot": 6.575754284858704,
+    "Tomato_Spider_mites_Two_spotted_leaf": 2.995874546468258,
+    "Tomato_Target_Spot": 3.9806347340345383,
+    "Tomato_Two_spotted_spider_mite": 4.799605160951614,
+    "Tomato_YellowLeaf_Curl_Virus": 12.868809700012207,
+    "Tomato_healthy": 3.7787213921546936,
+    "Tomato_mosaic_virus": 11.60607784986496
+  },
+  "confidence": 12.868809700012207,
+  "predicted_class": "Tomato_YellowLeaf_Curl_Virus"
+}

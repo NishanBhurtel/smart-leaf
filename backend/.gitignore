@@ -1,0 +1,28 @@
+# Python virtual environments
+env/
+venv/
+.env/
+.venv/
+
+# Environment variable files
+.env
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Large model files (use Git LFS)
+*.keras
+*.h5
+*.pb
+*.onnx
+*.pt
+*.pth
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Node modules
+node_modules/
