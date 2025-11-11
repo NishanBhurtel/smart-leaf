@@ -2,6 +2,7 @@
 env/
 venv/
 .env/
+example.env/
 .venv/
 
 # Environment variable files
