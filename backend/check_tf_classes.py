@@ -1,7 +1,7 @@
 """Check exact class order from TensorFlow dataset"""
 import tensorflow as tf
 
-output_folder = r"E:\smart-leaf\splitted_dataset"
+output_folder = r"E:\CNN_Project_Plant\PlantVillage"
 img_size = (256, 256)
 batch_size = 8
 

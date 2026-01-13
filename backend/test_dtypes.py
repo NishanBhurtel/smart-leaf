@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 from tensorflow import keras
 
-model = keras.models.load_model("my_model.keras")
+model = keras.models.load_model("plant_disease_model.keras")
 class_names = [
     "Pepper__bell___Bacterial_spot", "Pepper__bell___healthy", "PlantVillage",
     "Potato___Early_blight", "Potato___healthy", "Potato___Late_blight",
