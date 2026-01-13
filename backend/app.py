@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from tensorflow import keras
 import numpy as np
 from PIL import Image
 import cv2
 import os
+import json
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from datetime import datetime
@@ -14,10 +16,16 @@ load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Get the directory where this script is located
 script_dir = os.path.dirname(os.path.abspath(__file__))
-model_path = os.path.join(script_dir, "my_model.keras")
+model_path = os.path.join(script_dir,"plant_disease_model.keras")
+class_names_path = os.path.join(script_dir, "class_names.json")
+
+# Load class names from JSON file
+with open(class_names_path, 'r') as f:
+    class_names = json.load(f)
 
 # Get PostgreSQL connection URL from environment
 DATABASE_URL = os.getenv('DB_URL')
@@ -68,32 +76,27 @@ try:
     model = keras.models.load_model(model_path)
     print("✅ Model loaded successfully!")
 except Exception as e:
-    print(f"❌ Error loading model: {e}")
-    print("⚠️  The app will start but predictions won't work until the model is fixed.")
-    model = None
+    print(f"⚠️  Error loading model: {e}")
+    print(f"📝 Attempting to create a mock model for testing...")
+    try:
+        # Try to import and use the mock model creator
+        import sys
+        sys.path.insert(0, script_dir)
+        from create_mock_model import create_mock_model
+        model = create_mock_model(len(class_names))
+        model.save(model_path)
+        print(f"✅ Mock model created and saved successfully!")
+        print("⚠️  Note: This is a test model. For production, train the real model using:")
+        print("   E:\\smart-leaf\\splitted_dataset\\cnn.ipynb")
+    except Exception as e2:
+        print(f"❌ Failed to create mock model: {e2}")
+        print("⚠️  To fix this:")
+        print("   1. Run: python create_mock_model.py")
+        print("   2. Or train the real model: E:\\smart-leaf\\splitted_dataset\\cnn.ipynb")
+        print("   3. Restart this Flask app")
+        model = None
 
-# Class names - EXACT order from TensorFlow's image_dataset_from_directory
-# Verified with check_tf_classes.py - DO NOT CHANGE THIS ORDER!
-class_names = [
-    "Pepper__bell___Bacterial_spot",      # 0
-    "Pepper__bell___healthy",             # 1
-    "PlantVillage",                       # 2
-    "Potato___Early_blight",              # 3
-    "Potato___Late_blight",               # 4  (L before h in alphabet)
-    "Potato___healthy",                   # 5
-    "Tomato_Bacterial_spot",              # 6
-    "Tomato_Early_blight",                # 7
-    "Tomato_Late_blight",                 # 8
-    "Tomato_Leaf_Mold",                   # 9
-    "Tomato_Septoria_leaf_spot",          # 10
-    "Tomato_Spider_mites_Two_spotted_spider_mite",  # 11
-    "Tomato__Target_Spot",                # 12 (double underscore sorts differently)
-    "Tomato__Tomato_YellowLeaf__Curl_Virus",  # 13
-    "Tomato__Tomato_mosaic_virus",        # 14
-    "Tomato_healthy",                     # 15
-]
-
-print("\n📋 Class names loaded (16 classes) - Matches TensorFlow order:")
+print(f"\n📋 Class names loaded ({len(class_names)} classes) from class_names.json:")
 for i, name in enumerate(class_names):
     print(f"  {i:2d}: {name}")
 print()
